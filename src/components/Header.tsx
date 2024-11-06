@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useAnimation, useScroll } from "framer-motion";
 import {
   Col,
   Item,
@@ -10,7 +10,7 @@ import {
   Input,
 } from "../styles/HeaderStyled";
 import { Link, useMatch } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const logoVars = {
   normal: {
@@ -30,10 +30,49 @@ function Header() {
   const homeMatch = useMatch("/");
   const tvMatch = useMatch("/tv");
   const [searchOpen, setSearchOpen] = useState(false);
-  const toggleSearch = () => setSearchOpen((flag) => !flag);
+  const { scrollY } = useScroll();
+  // 애니메이션을 동시에 실행할 때 사용하는 훅.
+  const inputAnimation = useAnimation();
+  const navAnimation = useAnimation();
+
+  const toggleSearch = () => {
+    if (searchOpen) {
+      // 애니메이션 끄기
+      inputAnimation.start({
+        scaleX: 0,
+      });
+    } else {
+      // 애니메이션 켜기
+      inputAnimation.start({
+        scaleX: 1,
+      });
+    }
+
+    setSearchOpen((flag) => !flag);
+  };
+
+  useEffect(() => {
+    // input이 안 닫히길래 추가했음... 왤까.
+    inputAnimation.start({ scaleX: 0 });
+
+    scrollY.on("change", () => {
+      scrollY.get() > 80
+        ? navAnimation.start("scroll")
+        : navAnimation.start("top");
+    });
+  }, [inputAnimation, scrollY, navAnimation]);
+
+  const navVars = {
+    top: {
+      backgroundColor: "rgba(0, 0, 0, 0)",
+    },
+    scroll: {
+      backgroundColor: "rgba(0, 0, 0, 1)",
+    },
+  };
 
   return (
-    <Nav>
+    <Nav variants={navVars} animate={navAnimation} initial={"top"}>
       <Col>
         <Logo
           variants={logoVars}
@@ -72,7 +111,9 @@ function Header() {
             ></path>
           </motion.svg>
           <Input
-            animate={{ scaleX: searchOpen ? 1 : 0 }}
+            // [애니메이션 처리 방법 1]
+            animate={inputAnimation}
+            // [애니메이션 처리 방법 2]
             transition={{ type: "linear" }}
             placeholder="제목명을 입력하세요."
           />

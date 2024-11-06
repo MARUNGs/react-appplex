@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import styled from "styled-components";
 
-export const Nav = styled.nav`
+export const Nav = styled(motion.nav)`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -80,5 +80,14 @@ export const Input = styled(motion.input)`
   transform-origin: right center;
 
   position: absolute;
-  left: -180px;
+  right: 25px;
+
+  padding: 5px 10px;
+  padding-left: 40px;
+  z-index: -1;
+
+  color: white;
+  font-size: 16px;
+  background-color: transparent;
+  border: 1px solid ${(props) => props.theme.white.lighter};
 `;
