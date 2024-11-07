@@ -9,8 +9,9 @@ import {
   Circle,
   Input,
 } from "../styles/HeaderStyled";
-import { Link, useMatch } from "react-router-dom";
+import { Link, useMatch, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
 const logoVars = {
   normal: {
@@ -25,6 +26,10 @@ const logoVars = {
   },
 };
 
+interface IForm {
+  keyword: string;
+}
+
 function Header() {
   // 현재 매칭되는 url와 동일한지 확인하는 훅 사용. 일치하면 값이 보여지고 없으면 null
   const homeMatch = useMatch("/");
@@ -34,6 +39,12 @@ function Header() {
   // 애니메이션을 동시에 실행할 때 사용하는 훅.
   const inputAnimation = useAnimation();
   const navAnimation = useAnimation();
+  const { register, handleSubmit } = useForm<IForm>();
+  const navigate = useNavigate();
+
+  const onValid = (data: IForm) => {
+    navigate(`/search?keyward=${data.keyword}`);
+  };
 
   const toggleSearch = () => {
     if (searchOpen) {
@@ -95,7 +106,7 @@ function Header() {
         </Items>
       </Col>
       <Col>
-        <Search>
+        <Search onSubmit={handleSubmit(onValid)}>
           <motion.svg
             onClick={toggleSearch}
             animate={{ x: searchOpen ? -210 : 0 }}
@@ -111,6 +122,7 @@ function Header() {
             ></path>
           </motion.svg>
           <Input
+            {...register("keyword", { required: true, minLength: 2 })}
             // [애니메이션 처리 방법 1]
             animate={inputAnimation}
             // [애니메이션 처리 방법 2]

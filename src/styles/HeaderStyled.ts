@@ -63,7 +63,7 @@ export const Circle = styled(motion.span)`
   margin: 0 auto;
 `;
 
-export const Search = styled.span`
+export const Search = styled.form`
   color: "whitesmoke";
   display: flex;
   align-items: center;
