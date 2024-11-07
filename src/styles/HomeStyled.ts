@@ -12,7 +12,7 @@ export const Loader = styled.div`
   align-items: center;
 `;
 
-export const Banner = styled.div<{ bgPhoto: string }>`
+export const Banner = styled.div<{ $bgPhoto: string }>`
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -20,7 +20,7 @@ export const Banner = styled.div<{ bgPhoto: string }>`
   padding: 60px;
 
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url(${(props) => props.bgPhoto});
+    url(${(props) => props.$bgPhoto});
   background-size: cover;
 `;
 
@@ -49,12 +49,13 @@ export const Row = styled(motion.div)`
   position: absolute;
 `;
 
-export const Box = styled(motion.div)<{ bgPhoto: string }>`
+export const Box = styled(motion.div)<{ $bgPhoto: string }>`
   background-color: white;
-  background-image: url(${(props) => props.bgPhoto});
+  background-image: url(${(props) => props.$bgPhoto});
   background-size: cover;
   background-position: center center;
   height: 200px;
+  cursor: pointer;
 
   &:first-child {
     transform-origin: center left;
@@ -77,4 +78,51 @@ export const Info = styled(motion.div)`
     text-align: center;
     font-size: 14px;
   }
+`;
+
+export const BigMovie = styled(motion.div)`
+  position: absolute;
+  // top은 Home 컴포넌트 내부에서 처리
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 40vw;
+  height: 80vh;
+
+  border-radius: 15px;
+  overflow: hidden;
+
+  background-color: ${(props) => props.theme.black.lighter};
+`;
+
+export const Overlay = styled(motion.div)`
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  opacity: 0;
+`;
+
+export const BigCover = styled.div`
+  width: 100%;
+  height: 400px;
+  background-size: cover;
+  background-position: center center;
+`;
+
+export const BigTitle = styled.h3`
+  color: ${(props) => props.theme.white.lighter};
+  font-size: 25px;
+  padding: 20px;
+
+  position: relative;
+  top: -60px;
+`;
+
+export const BigOverview = styled.p`
+  position: relative;
+  top: -70px;
+  padding: 10px;
+  color: ${(props) => props.theme.white.lighter};
 `;
